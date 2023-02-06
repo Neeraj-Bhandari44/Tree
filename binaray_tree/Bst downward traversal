@@ -1,0 +1,41 @@
+//User function Template for C++
+/*
+struct Node {
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+
+class Solution{
+public:
+    Node *dfs(Node*root,int tar){
+    if(root==NULL) return NULL;
+    if(root->data==tar) return root;
+    if(tar>root->data)return dfs(root->right,tar);
+    else return dfs(root->left,tar);
+}
+    long long int verticallyDownBST(Node *root,int target){
+        long long ans=0;
+       Node *node=dfs(root,target);
+       if(node){
+           queue<pair<Node*,int>>q;
+           q.push({node,0});
+           while(!q.empty()){
+               Node*check=q.front().first;
+               int level=q.front().second;
+               q.pop();
+               if(level==0) ans=ans+check->data;
+               if(check->right)q.push({check->right,level+1});
+               if(check->left) q.push({check->left,level-1});
+           }
+           return ans-target;
+       }
+       return -1;
+    }
+};
